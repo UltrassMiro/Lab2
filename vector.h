@@ -11,23 +11,23 @@ class Vector {
 private:
     double x, y, z;
 public:
-    Vector(double x=0, double y=0, double z=0) : x(x), y(y), z(z) {}
+    Vector(double x=0, double y=0, double z=0) : x(x), y(y), z(z) {} // Конструктор
 
-    double length() const { return sqrt(x*x + y*y + z*z); }
+    double length() const { return sqrt(x*x + y*y + z*z); } // Формула длинны вектора
 
     void print() const {
-        cout << "(" << x << ", " << y << ", " << z << ")";
+        cout << "(" << x << ", " << y << ", " << z << ")"; // Вывод координат
     }
 
     bool operator==(const Vector& other) const {
         return x == other.x && y == other.y && z == other.z;
     }
 
-    bool operator<(const Vector& other) const {
+    bool operator<(const Vector& other) const { // Сравнение по длинне для сортировка
         return length() < other.length();
     }
 
-    void update(double nx, double ny, double nz) {
+    void update(double nx, double ny, double nz) { // Обновление координат
         x = nx; y = ny; z = nz;
     }
 };

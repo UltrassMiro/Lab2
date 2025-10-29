@@ -2,9 +2,9 @@
 using namespace std;
 
 int main() {
-    vector<Vector> vec;   // generic collection
-    list<Vector> lst;     // non-generic collection
-    Vector arr[3];        // array
+    vector<Vector> vec;   // Generic коллекция
+    list<Vector> lst;     // Non-generic коллекция
+    Vector arr[3];        // Массив из 3-х векторов
 
     int choice;
     bool running = true;
@@ -17,7 +17,9 @@ int main() {
         cout << "4. Show all list vectors\n";
         cout << "5. Add new array vector (right)\n";
         cout << "6. Show all array vectors\n";
-        cout << "7. Show binary tree (Preorder)\n";
+        cout << "7. Update coordinates\n";
+        cout << "8. Search vectors by minimum length\n";
+        cout << "9. Show binary tree (Preorder)\n";
         cout << "0. Exit\n";
         cin >> choice;
 
@@ -33,7 +35,6 @@ int main() {
 
             case 2: {
                 sort(vec.begin(), vec.end());
-                cout << "Sorted by length:\n";
                 print_all(vec);
                 break;
             }
@@ -74,20 +75,94 @@ int main() {
             }
 
             case 7: {
-                BinaryTree<Vector> tree;
+                int typeChoice;
+                cout << "Choose collection to update: 1-Vector, 2-List, 3-Array: ";
+                cin >> typeChoice;
 
-                for (auto& v : vec) tree.insert(v);
-                for (auto& v : lst) tree.insert(v);
-                for (auto& v : arr) tree.insert(v);
+                int index;
+                double x, y, z;
+                switch(typeChoice) {
+                    case 1:
+                        print_all(vec);
+                        cout << "Enter index to update: ";
+                        cin >> index;
+                        if(index > 0 && index <= (int)vec.size()) {
+                            cout << "Enter new coordinates (x y z): ";
+                            cin >> x >> y >> z;
+                            vec[index-1].update(x, y, z);
+                        } else cout << "Invalid index.\n";
+                        break;
+
+                    case 2: {
+                        int i = 1;
+                        for (auto& v : lst) {
+                            cout << i << ": "; v.print(); cout << endl;
+                            i++;
+                        }
+                        cout << "Enter index to update: ";
+                        cin >> index;
+                        if(index > 0 && index <= (int)lst.size()) {
+                            i = 1;
+                            for(auto& v : lst) {
+                                if(i == index) {
+                                    cout << "Enter new coordinates (x y z): ";
+                                    cin >> x >> y >> z;
+                                    v.update(x, y, z);
+                                    break;
+                                }
+                                i++;
+                            }
+                        } else cout << "Invalid index.\n";
+                        break;
+                    }
+
+                    case 3:
+                        cout << "Array indices 1-3.\nEnter index to update: ";
+                        cin >> index;
+                        if(index >= 1 && index <= 3) {
+                            cout << "Enter new coordinates (x y z): ";
+                            cin >> x >> y >> z;
+                            arr[index-1].update(x, y, z);
+                        } else cout << "Invalid index.\n";
+                        break;
+
+                    default:
+                        cout << "Unknown collection.\n";
+                }
+                break;
+            }
+
+            case 8: {
+                double minLen;
+                cout << "Enter minimum length: ";
+                cin >> minLen;
+
+                cout << "\nVectors in vector >= " << minLen << ":\n";
+                for(auto& v : vec)
+                    if(v.length() >= minLen) { v.print(); cout << " | length = " << v.length() << endl; }
+
+                cout << "\nVectors in list >= " << minLen << ":\n";
+                for(auto& v : lst)
+                    if(v.length() >= minLen) { v.print(); cout << " | length = " << v.length() << endl; }
+
+                cout << "\nVectors in array >= " << minLen << ":\n";
+                for(auto& v : arr)
+                    if(v.length() >= minLen) { v.print(); cout << " | length = " << v.length() << endl; }
+
+                break;
+            }
+
+            case 9: {
+                BinaryTree<Vector> tree;
+                for(auto& v : vec) tree.insert(v);
+                for(auto& v : lst) tree.insert(v);
+                for(auto& v : arr) tree.insert(v);
 
                 cout << "\nPreorder traversal using method:\n";
                 tree.preorder();
 
                 cout << "\nPreorder traversal using iterator:\n";
-                for (auto& v : tree) {
-                    v.print();
-                    cout << " | length = " << v.length() << endl;
-                }
+                for(auto& v : tree) { v.print(); cout << " | length = " << v.length() << endl; }
                 break;
             }
 
